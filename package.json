@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "keywords": [
-    "TypeScript", "ReactJS", "Google Maps", "OOP"
+    "TypeScript",
+    "ReactJS",
+    "Google Maps",
+    "OOP"
   ],
   "dependencies": {
     "@types/jest": "^26.0.3",
