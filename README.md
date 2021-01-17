@@ -1,4 +1,4 @@
-## DEEP DIVE WITH TYPESCRIPT, REACTJS 
+## DEEP DIVE WITH TYPESCRIPT, REACTJS
 
 ## Available Scripts
 
@@ -17,7 +17,12 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
- 
+## Features
 
-  
- 
+### Use of UseReducer Hook
+
+### Update Different Shapes(e.g circle) dimesions from input field
+
+### Built on TypeScript
+
+### Seperation of Concerns(best practice)

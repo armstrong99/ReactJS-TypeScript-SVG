@@ -1,12 +1,15 @@
 #container {
     height: 40vh;
     margin-bottom: 5rem;
-    background: silver;
+    background: #c0c0c01a;
     padding: 2rem;
     overflow: auto;
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+}
+#btnSec {
+    display: flex; justify-content: center;
 }
 button {
     background: #9090e8;
@@ -21,17 +24,38 @@ button {
 
 #delBtn {
     cursor: pointer;
-    font-weight: bold;
-    color: red;
-    float: right
-}
+    font-weight: 700;
+    color: white;
+    /* float: right; */
+    background: red;
+ }
+
+ #formShape {
+     display: flex;
+     height:auto;
+     width: 100%;
+     justify-content: space-around;
+     flex-wrap: wrap;
+ }
 
 #shapesCont {
-    max-width: 100vw;
-}
+
+    @media screen and (min-width: 48rem) {
+        
+        max-width: 80vw;
+    }
+
+ 
+        max-width: 480vw;
+ }
 
 input {
-    padding: .3rem;
+    padding: .5rem;
+    border: 1px solid grey;
+    width: 15rem;
+    border-radius: .5rem;
+    box-shadow: 0rem 0rem 5px 1px #c0c0c00f;
+    margin: .5rem auto;
 }
 label {
     font-weight: bold;

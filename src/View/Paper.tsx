@@ -1,5 +1,8 @@
 import React,{useReducer} from 'react';
+import Shapes from '../Components/Shapes';
+import { Load } from '../Types/Paper';
 import './Style/paper.css'
+ 
  
 
  
@@ -8,87 +11,102 @@ interface IAllTravProps {
 
 export const AllTrav: React.FC<IAllTravProps> = () => {
 
-  const store:(string | number)[] = [
+  const store: any[] = [
     
   ] 
 
-  interface Data {
-    action: string,
-    load: any 
-  }
-  
- 
-   
-
- 
-  const storeReducer = (prevState:Array<any>, data: Data ) => {
-    let type: string = data.action
-    let { index, text, key } = data.load
-
-    
-    
-          switch (type) {
-            case 'add': return [...prevState, data.load]
-            case 'from_input': prevState[index][key] = text
-
-              return [...prevState]
-            case 'delete': prevState.splice(index, 1)
-
-              return [...prevState]
+const storeReducer = (prevState:Array<any>, {action, load}:{action: string, load: Load} ) => {
+      
+  switch (action) {
+      
+      case 'add': return [...prevState, load]
+      
+      case 'from_input':
+        
+      if (load.nature === "update") {
+              
+          let { index, key, text } = load
                
+          prevState[index][key] = text
+                
+          return [...prevState];
              
-          
-            default: return prevState
+        }
+        
+        // eslint-disable-next-line
+      case 'delete':
+        if (load.nature === "del") {
+          let { index } = load
+          prevState.splice(index, 1)
+          return [...prevState];
+        }
+               
+            
+        // eslint-disable-next-line
+      default: return prevState;
+      
           }
    }
 
   const [state, dispatch] = useReducer(storeReducer, store)
 
-  let x:number = state.filter(val => val.type.includes('Circle')).length 
-  let y: number = state.filter(val => val.type.includes('Rectangle')).length 
-  let z:number = state.filter(val => val.type.includes('Line')).length 
 
+  
+/**
+ * Returns the number of a particular shape in the store
+  * @param {string} type - The name of the shape.
+  */
+  let count = (name: string): number => state.filter(val => val.type.includes(name)).length 
+  
+ 
+     
+/**
+ * Populate the store with default values for each shape
+  * @param {string} type - The name of the shape.
+  */
   const handleDraw = (type: string):void => {
           switch (type) {
             case 'circle':
 
               dispatch({
-                action: 'add', load: {
-                  type: `Circle ${x}`,
-                  fill: 'purple',
+                action: 'add',
+                load: {
+                  nature: "shape",
+                  type: `Circle ${count('Circle')}`,
+                  fill: 'limegreen',
                   left: 50,
                   radius: 40,
                   top: 50,
-                
-              }})
+                }})
               
               break;
             case 'rect':
               dispatch({
-                action: 'add', load: {
-                  type: `Rectangle ${y}`,
-                  fill: 'orange',
+                action: 'add',
+                load: {
+                  nature: "shape",
+                  type: `Rectangle ${count('Rectangle')}`,
+                  fill: 'cyan',
                   left: 50,
                   top: 50,
                   height: 200,
                   width: 300,
-                
-              }})
+               }})
               
               break;
             case 'line':
               dispatch({
-              action: 'add', load: {
-                type: `Line ${z}`,
+                action: 'add',
+                load: {
+                nature: "shape",
+                type: `Line ${count('Line')}`,
+                color: 'green',
                 x1: 0,
                 x2: 200,
                 y1: 0,
                 y2: 200,
                 thickness: 2,
-                color: 'green'
-                 
-              
-            }})
+                 }})
               
               break;
           
@@ -97,75 +115,51 @@ export const AllTrav: React.FC<IAllTravProps> = () => {
           }
   }
 
-   const handleInput = (text:string,index:number, key:string):void => {
-     dispatch({
+
+/**
+ * Takes values from input field to modify the shape dimensions.
+ * @param {string} text - The value of the input field
+ * @param {number} index - The index of the shape object on the store array
+ * @param {string} key - The value of the actuall dimension we intend updating
+ */
+  const handleInput = (text: string, index: number, key: string): void => {
+
+    dispatch({
        action: 'from_input',
        load: {
           text,
          index,
-         key
-       }
+         key,
+         nature: "update"
+        }
      })
   }
 
-  const handleDelete = (index:number) => {
+  /**
+ * Deletes a particular shape from the store array
+  * @param {number} index - The index of the shape object on the store array
+  */
+  const handleDelete = (index:number):void => {
     dispatch({
       action: 'delete',
       load: {
         index,
-       }
+        nature: "del"
+        }
       })
   }
+
   return (
     <>
-      <section id="container">
-        {state.map(val => (
-          <section>
-
-            <svg 
-            height={val.height} 
-            width={val.width}>
-              {
-                val.type.includes('Circle') ?
-              
-                <circle 
-                cx={val.left} 
-                cy={val.top} 
-                r={val.radius} 
-                stroke={"black"} 
-                stroke-width={"3"} 
-                fill={val.fill} />
-                
-                  :
-                  val.type.includes('Rectangle') ? 
-                <rect 
-                width={val.width} 
-                height={val.height}
-                fill = {val.fill} 
-                stroke-width = {'1'}  
-                stroke = {'rgb(0,0,0)'} />
-                  :
-                  <line 
-                  x1={val.x1}
-                  y1={val.y1}
-                  x2={val.x2} 
-                  y2={val.y2} 
-                  stroke={val.color}
-                  stroke-width={val.thickness} />
-            }
-                </svg>
-                
-          </section>
-        ))}
-
-        
-          
-      </section> 
+      
+      {/* shape board component to display the shapes */}
+      
+      <Shapes state={state} />
 
       
+      {/* Add new shapes with buttons to the board */}
 
-      
-      <section>
+      <section id="btnSec">
        <button onClick={():any => handleDraw('circle')}>
         Add Circle
       </button>
@@ -178,46 +172,47 @@ export const AllTrav: React.FC<IAllTravProps> = () => {
       </section>
 
 
+      
+      {/* Update the Shapes property from input field */}
+
       <section>
-              <h3>Shapes</h3>
+        <h3 style={{marginLeft: '4rem'}}>Shapes</h3>
+        <section id="formShape">
+
         {
-          state.map((val, i) => (
+          state.map((val, index) => (
              <section id="shapesCont">
               
            
-              <h5>{val.type} </h5>
-              
+              <h5>{val.type}</h5>
+               
               {
-                Object.keys(val).map((key, i) => i !== 0 ? 
+                Object.keys(val).map((key, i) => i !== 0 && i !== 1 ? 
 
                   <div>
-                    <label> {key} </label>
+                    <label> {key}: </label>
                     <input 
                     type='text' 
                     value={val[key]} 
-                      onChange={({ target }) => handleInput(target.value, i, key)} />
+                      onChange={({ target }) => handleInput(target.value, index, key)} />
                     
-                    
-                  </div>
+                   </div>
 
                   : <div></div>
                 
                 )
               }
-              <span id="delBtn" onClick={():void => handleDelete(i)}>delete</span>
-              <hr></hr>
-             </section>
+              <button id="delBtn" onClick={():any => handleDelete(index)}>delete</button>
 
-            
-            
+            </section>
 
-          ))
+           ))
         }
+        </section>
       </section>
 
-         
-
-    </>
-  );
+     </>
+ 
+   );
 };
  
