@@ -19,10 +19,10 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ## Features
 
-### Use of UseReducer Hook
+### `Use of UseReducer Hook`
 
-### Update Different Shapes(e.g circle) dimesions from input field
+### `Update Different Shapes(e.g circle) dimesions from input field`
 
-### Built on TypeScript
+### `Built on TypeScript`
 
-### Seperation of Concerns(best practice)
+### `Seperation of Concerns(best practice)`
